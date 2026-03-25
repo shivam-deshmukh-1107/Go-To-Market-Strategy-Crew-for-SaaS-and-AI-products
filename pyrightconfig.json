@@ -1,0 +1,7 @@
+{
+  "pythonVersion": "3.11",
+  "venvPath": ".",
+  "venv": ".venv311",
+  "pythonPlatform": "Windows",
+  "extraPaths": ["src"]
+}

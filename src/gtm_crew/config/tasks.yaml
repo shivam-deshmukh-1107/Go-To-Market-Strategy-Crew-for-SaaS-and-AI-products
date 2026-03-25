@@ -1,0 +1,444 @@
+market_research_task:
+  description: >
+    Research the GTM competitive landscape for the following product:
+
+    Product: {product_description}
+    Target Audience: {target_audience}
+    Stage: {stage}
+    Pricing Model: {pricing_model}
+    Budget: {budget_level}
+    Timeline: {timeline_weeks} weeks
+    Team Size: {team_size}
+
+    YOU MUST PRODUCE ALL OF THE FOLLOWING:
+
+    1. MARKET SUMMARY (3-5 sentences):
+       - Include a TAM estimate in $ billions with growth rate (e.g., "$3.8B TAM, 17% CAGR 2024-2028")
+       - Name the primary buyer motion (PLG, sales-led, community-led)
+       - Identify the single biggest shift happening in this market right now
+
+    2. KEY TRENDS (exactly 5):
+       - Each trend must describe a SPECIFIC, OBSERVABLE buyer behavior shift
+       - Each trend must start with a named company, stat, or dated event
+       - Each trend MUST be from 2025 or 2026 — STRICTLY NO trends from 2024 or earlier
+       - If a web search result references a pre-2025 event, discard it and
+         search again using: "[competitor name] 2025 OR 2026 update"
+       - FORBIDDEN: "companies are seeking", "there is growing demand", "businesses want"
+       - FORBIDDEN: Any trend that cites a year earlier than 2025
+       - GOOD EXAMPLE: "Zendesk's Q1 2026 price increase pushed 18% of SMB accounts
+         to evaluate alternatives within 90 days (G2 review spike Q1 2026)"
+
+    3. COMPETITORS (5-7 entries), for each include:
+       - Name and URL
+       - Target segment (be specific: company size + industry)
+       - Top 3 specific features (name the feature, not the category)
+       - pricing_tiers: list EXACT plan names and prices as separate line items
+         (e.g., "Starter — $15/agent/mo", "Growth — $49/agent/mo", "Pro — $79/agent/mo")
+         NEVER leave pricing_tiers null or empty. If pricing is not publicly listed,
+         write "Custom pricing — contact sales" as a single item.
+       - differentiation_notes: describe the competitor's GENERAL product weakness
+         as observed by their customers — focus on usability, coverage, or depth gaps
+         BAD: "lacks AI features"
+         GOOD: "Dashboard is complex and requires training; non-technical support
+                leads often abandon setup within the first week"
+       - exploitable_gap: describe InsightPulse's SPECIFIC attack angle against
+         this competitor's weakness — a concrete GTM or product action to exploit it
+         BAD: "lacks AI features" (same as differentiation_notes)
+         GOOD: "Launch a one-click sentiment report targeting Freshdesk users on
+                the $49 tier who need AI insights but cannot justify upgrading to $99"
+         NEVER leave exploitable_gap null, empty, or identical to differentiation_notes
+
+    4. DIFFERENTIATION HINTS (exactly 5):
+       - Each hint must be DISTINCT — no repeating affordability, integration, or ease-of-use
+       - Each hint must reference a specific unmet need from the competitor analysis
+       - Each hint must suggest a concrete product or GTM action to own that position
+
+    STRICTLY FORBIDDEN OUTPUT:
+    - "The market is growing rapidly"
+    - "Businesses are increasingly seeking"
+    - "Various companies offer"
+    - Any competitor feature listed as just "AI analytics" or "automation"
+    - Differentiation hints that are just synonyms of "cheaper and easier to use"
+    - pricing_tiers left as null
+    - exploitable_gap left as null
+    - exploitable_gap identical to differentiation_notes
+    - Any trend citing a year earlier than 2025
+
+  agent: market_research_analyst
+  expected_output: >
+    A fully structured MarketResearch object with: a quantified market_summary,
+    exactly 5 specific key_trends ALL from 2025 or 2026 (no pre-2025 dates),
+    5-7 competitors each with real pricing_tiers as a list of named plan prices,
+    a differentiation_notes describing the competitor's general weakness,
+    and a non-null exploitable_gap that is DIFFERENT from differentiation_notes
+    and describes InsightPulse's specific attack angle against that competitor,
+    and 5 distinct differentiation_hints.
+    Zero vague language. Every claim is specific and actionable.
+    pricing_tiers and exploitable_gap must NEVER be null.
+    exploitable_gap must NEVER repeat differentiation_notes word-for-word.
+
+
+icp_persona_task:
+  description: >
+    Using the market research output and product details, define the ICP and
+    2-3 buyer personas that represent the full decision-making unit.
+
+    Product: {product_description}
+    Target Audience: {target_audience}
+    Stage: {stage}
+    Budget: {budget_level}
+    Team Size: {team_size}
+
+    ICP REQUIREMENTS:
+    - company_size: include headcount range AND revenue range (e.g., "10-80 employees, $500K-$5M ARR")
+    - industries: list each as a separate item, with sub-niche specified
+      (e.g., "B2B SaaS — customer success tooling" NOT just "B2B SaaS")
+    - tech_stack: ONE tool per line item — no sentences
+    - geography: list specific countries or metro regions — NOT "North America and Europe"
+    - budget_level: specify a monthly spend range in USD
+
+    PERSONA REQUIREMENTS (for each of 2-3 personas):
+    - Cover the full DMU: one champion, one influencer, one economic buyer
+    - name: their actual job title at a specific company stage
+      (e.g., "Head of Support at a 40-person Series A SaaS startup")
+    - day_in_the_life: one sentence describing their current workflow
+      WITHOUT this product, including the tool they use and the pain it causes
+    - pains: minimum 3, each must include a QUANTITY or FREQUENCY
+      BAD: "Difficulty managing tickets"
+      GOOD: "Spends 2+ hours/day manually tagging tickets in Zendesk,
+             with no automated pattern detection — CSAT drops 0.3 points/month"
+    - goals: tie each goal to a measurable outcome with a timeframe
+    - buying_triggers: each trigger must be a SPECIFIC EVENT, not a general pressure
+      BAD: "Needs better tools"
+      GOOD: "CEO sees a competitor's CSAT score 15% higher on G2 and demands action"
+    - objections: each objection must reference a NAMED competitor or tool they use today
+    - success_criteria: include a specific metric, baseline value, target value,
+      and timeframe (e.g., "First response time: 48h to 12h within 60 days")
+
+    STRICTLY FORBIDDEN:
+    - Tech stack listed as a single sentence
+    - Geography listed as just "North America and Europe"
+    - Pains without any quantity or frequency
+    - Success criteria without a number and timeframe
+
+  agent: icp_persona_designer
+  expected_output: >
+    A fully structured ICPAndPersonas object. ICP has specific headcount+revenue range,
+    per-line tech stack, specific geography, and USD budget range.
+    Each of 2-3 personas covers a distinct DMU role with quantified pains,
+    event-based triggers, competitor-referenced objections, and measurable
+    success criteria with baseline and target values.
+
+
+positioning_task:
+  description: >
+    Using the ICP, personas, and market research, craft positioning and messaging
+    for this product.
+
+    Product: {product_description}
+    Target Audience: {target_audience}
+    Stage: {stage}
+    Pricing Model: {pricing_model}
+
+    POSITIONING STATEMENT — use this exact template:
+    "For [specific ICP with company size and industry]
+     who currently struggle with [specific quantified pain from persona research],
+     [Product Name] is the [category] that [unique, measurable benefit].
+     Unlike [top named competitor], we [specific differentiator that references
+     a real gap identified in market research]."
+
+    VALUE PROPOSITIONS — exactly 3:
+    - Each VP must address a DIFFERENT persona's primary pain (name the persona)
+    - Each VP must include a concrete outcome metric (%, time saved, $ saved)
+    - Each VP must name a specific product capability — not a category
+    - FORBIDDEN WORDS: "powerful", "seamless", "robust", "cutting-edge",
+      "innovative", "next-generation", "world-class", "game-changing"
+
+    PERSONA MESSAGES — for each persona:
+    - headline: maximum 12 words, must reference their specific pain or trigger event,
+      must be different in tone per role:
+        * Support Lead / Head of Support: urgent/relief tone
+          EXAMPLE: "Stop triaging manually. Know what's broken in 60 seconds."
+        * Product Manager / Analyst: strategic/data tone
+          EXAMPLE: "Turn 500 weekly tickets into your next sprint priorities."
+        * CEO / Founder: ROI/growth tone
+          EXAMPLE: "Cut support costs 30% before your next board meeting."
+        * CFO: cost-control/forecast tone                                           # ← CHANGED
+          EXAMPLE: "Stop guessing on support ROI. Know your numbers in one view."
+        * CIO / Head of IT / VP Engineering: efficiency/integration tone            # ← CHANGED
+          EXAMPLE: "Cut integration overhead by 40% while engineers stay on roadmap."
+        * If a persona does not match any archetype above, assign them to the       # ← CHANGED
+          closest role by primary concern:
+            - Budget/cost focus → CFO tone
+            - Operational efficiency / tooling → CIO tone
+            - Revenue / board pressure → CEO/Founder tone
+            - Team productivity / daily workflow → Support Lead tone
+    - key_bullets: EXACTLY 3-4 bullets per persona (never 1 or 2)
+      * Each bullet must reference a SPECIFIC InsightPulse feature
+      * Each bullet must include a measurable outcome
+      * Bullets must be different from value propositions — more specific, more personal
+      * FORBIDDEN WORDS in bullets: "seamless", "powerful", "robust",
+        "cutting-edge", "innovative", "next-generation", "world-class"
+
+    STRICTLY FORBIDDEN:
+    - Generic positioning not tied to named competitor gap
+    - Value propositions that don't include a number
+    - Persona headlines longer than 12 words
+    - Fewer than 3 bullets per persona
+    - Repeated themes across different personas' bullets
+    - The word "seamless" anywhere in this section
+    - Generic headlines that could apply to any SaaS product                       # ← CHANGED
+      BAD: "Streamline your team with AI. Resolve tickets quicker."
+      GOOD: "Your 200-ticket backlog is now a 15-minute morning review."
+
+  agent: positioning_strategist
+  expected_output: >
+    A Positioning object with: a templated positioning_statement naming a competitor
+    and a quantified benefit; 3 value_propositions each tied to a named persona with
+    a measurable outcome; and persona_messages for each persona with a max-12-word
+    headline and exactly 3-4 specific, numbered key_bullets.
+    Every headline must match its persona's assigned tone archetype.
+    No headline may be generic enough to apply to any SaaS product.
+    The word "seamless" must not appear anywhere in the output.
+
+
+channel_plan_task:
+  description: >
+    Design the channel strategy and sequenced experiment roadmap for this product.
+
+    Product: {product_description}
+    Stage: {stage}
+    Budget: {budget_level}
+    Timeline: {timeline_weeks} weeks
+    Team Size: {team_size}
+
+    CHANNEL REQUIREMENTS (3-5 channels):
+    For each channel include:
+    - Which SPECIFIC PERSONA it reaches (name them from the persona output)
+    - Why this channel fits THIS product at THIS stage (not generic rationale)
+    - monthly_reach: a SPECIFIC number or range — pull from the gtm_channels.md
+      pattern file for exact community sizes and reach benchmarks.
+      Each channel MUST have a DIFFERENT monthly_reach value.
+      Use these exact figures from the pattern file:
+        * LinkedIn posts (500-connection account): "500-5,000 impressions per post"
+        * Support Driven Slack: "~3,000 members"
+        * Product Led Growth Slack: "~10,000 members"
+        * Reddit r/CustomerSuccess: "~180,000 members"
+        * Reddit r/SaaS: "~200,000 members"
+        * Indie Hackers: "~50,000 monthly visitors"
+        * Cold email (weekly): "50-200 sends per week"
+      GOOD: "~3,000 members in Support Driven Slack"
+      GOOD: "500-5,000 impressions per post (LinkedIn, 500-connection account)"
+      BAD: "High-intent, niche B2B audiences" — FORBIDDEN
+      BAD: "5000" with no units or context — FORBIDDEN
+      BAD: Same number repeated for multiple channels — FORBIDDEN
+    - The FIRST concrete action to launch it (specific, executable this week)
+    - HARD RULE: If budget_level is "Low" or "Lean", NO paid advertising channels.
+      If team_size is 1-2, NO more than 3 simultaneous active channels.
+
+    EXPERIMENT REQUIREMENTS (4-6 experiments):
+    For each experiment include:
+    - name and goal
+    - description: specific execution steps, not just what it is
+    - effort: Low / Medium / High
+    - timing: specific week numbers (e.g., "Weeks 1-3") — NEVER "Ongoing" alone
+    - baseline: current state BEFORE the experiment
+      (e.g., "0 demo requests/week currently")
+    - target: desired state AFTER the experiment
+      (e.g., "5 demo requests/week by Week 3")
+    - success_metric: how you measure it and with what tool
+    - ice_score: rate Impact (1-10) + Confidence (1-10) + Ease (1-10),
+      provide the sum as overall ICE score
+    - depends_on: name which prior experiment this builds on (or "None" if first)
+
+    SEQUENCING RULE: Experiments must be ordered so that:
+    - Awareness/outbound experiments come first (Weeks 1-3)
+    - Engagement/demo experiments come after (Weeks 3-6)
+    - Conversion/referral experiments come last (Weeks 6+) when a user base exists
+    - A referral program MUST NOT appear before Week 6
+
+    STRICTLY FORBIDDEN:
+    - Paid ads if budget is Low or Lean
+    - More than 3 simultaneous active experiments for a team of 1-2
+    - Referral programs in Weeks 1-4
+    - Experiments without a baseline and target metric
+    - "Ongoing" as the only timing — must include a specific start week
+    - monthly_reach as a descriptive phrase instead of a number
+    - monthly_reach as a bare number with no units (e.g., "5000" alone)
+    - Same monthly_reach value repeated across multiple channels
+
+  agent: channel_planner
+  expected_output: >
+    A ChannelPlan object with 3-5 persona-specific channels, each with a distinct
+    numeric monthly_reach pulled from the gtm_channels.md pattern file (with units
+    and context, not a bare number), and a first concrete action. Plus 4-6 sequenced
+    experiments each containing baseline, target, ICE score, and dependency mapping.
+    All recommendations consistent with stated budget and team size constraints.
+    No two channels may share the same monthly_reach value.
+
+
+metrics_risk_task:
+  description: >
+    Define the GTM metrics framework and risk register for this product launch.
+
+    Product: {product_description}
+    Stage: {stage}
+    Channels and experiments: use the channel plan output.
+    Budget: {budget_level}
+    Timeline: {timeline_weeks} weeks
+
+    KPI REQUIREMENTS:
+    - Identify ONE North Star Metric first — the single number that best captures
+      whether this GTM is working (e.g., "Weekly Trial Sign-Ups")
+    - Define 4-5 supporting KPIs, each must include:
+        * metric_name
+        * baseline (current value at start of GTM — use 0 if pre-launch)
+        * target (value to hit by end of Week {timeline_weeks})
+        * measurement_tool (e.g., Mixpanel, HubSpot, Google Analytics, manual)
+    - Include BOTH leading indicators (activity metrics: emails sent, posts published)
+      AND lagging indicators (outcome metrics: trials started, revenue)
+
+    FUNNEL REQUIREMENTS:
+    - Define 4-5 funnel stages from Awareness to Retention
+    - The FINAL stage must always be Retention — never end the funnel on Conversion  # ← CHANGED
+    - Each stage must include:
+        * stage name
+        * description of activities driving this stage
+        * example_metric with a SPECIFIC NUMBER
+        * conversion_rate to the NEXT stage — set to "N/A" only on the final         # ← CHANGED
+          Retention stage (since there is no stage after it)
+    - Numbers MUST be mathematically consistent top to bottom:
+      * Work top-down: start with the Awareness number, then multiply by each
+        conversion_rate to get the next stage's example_metric.
+      * Example of CORRECT math:
+          Awareness:    10,000 impressions × 10%  = 1,000 site visits
+          Consideration: 1,000 site visits  × 5%  = 50 demo requests
+          Conversion:      50 demo requests × 40% = 20 trials started
+          Activation:      20 trials started × 40% = 8 paying customers
+          Retention:        8 paying customers × N/A → final stage, no conversion
+      * STRICTLY FORBIDDEN: Any stage showing a number higher than what the
+        prior stage's math produces.
+      * STRICTLY FORBIDDEN: Ending the funnel at Conversion with a dangling          # ← CHANGED
+        conversion_rate that points nowhere — the Retention stage must follow.
+      * After writing all stages, verify each one:
+        stage[n].example_metric = stage[n-1].example_metric × stage[n-1].conversion_rate
+        If any stage fails this check, rewrite it before submitting.
+
+    RISK REQUIREMENTS (6-7 risks):
+    - At least 2 risks must be COMPETITOR-SPECIFIC:
+      (e.g., "Zendesk launches a free SMB tier targeting our ICP in the next 6 months")
+    - Each risk must include:
+        * risk description (specific to this product — no generic "market risk")
+        * impact: High / Medium / Low
+        * likelihood: High / Medium / Low
+        * early_warning_signal: the exact observable event that tells you this risk
+          is materializing (e.g., "Demo-to-trial conversion drops below 5% for 2 weeks")
+        * mitigation: a specific action with a named responsible role
+          (e.g., "Head of Growth accelerates partnership outreach to Zendesk marketplace")
+        * FORBIDDEN mitigations: "monitor carefully", "keep an eye on", "review regularly"
+
+    STRICTLY FORBIDDEN:
+    - KPIs without baseline and target values
+    - Funnel with mathematically inconsistent numbers
+    - Funnel that ends at Conversion without a following Retention stage              # ← CHANGED
+    - Final stage having a non-N/A conversion_rate                                   # ← CHANGED
+    - Risks without early warning signals
+    - Mitigation statements that are just "monitor" or "review"
+    - Generic risks not tied to this specific product, stage, or market
+
+  agent: metrics_risk_analyst
+  expected_output: >
+    A MetricsAndRisks object with: one identified North Star Metric,
+    4-5 KPIs each with baseline/target/tool, a 4-5 stage funnel ending in
+    Retention (never Conversion) with mathematically consistent numbers and
+    the final stage's conversion_rate set to "N/A", and 6-7 risks each with
+    competitor-specific entries, early warning signals, and role-assigned mitigations.
+    Funnel math must be verifiably correct top-to-bottom before submitting.
+
+
+final_blueprint_task:
+  description: >
+    You are the final quality gate. Integrate all agent outputs into one
+    coherent GTM blueprint for this product and run the following checks
+    BEFORE producing the final output:
+
+    Product: {product_description}
+    Target Audience: {target_audience}
+    Stage: {stage}
+    Pricing Model: {pricing_model}
+    Budget: {budget_level}
+    Timeline: {timeline_weeks} weeks
+    Team Size: {team_size}
+
+    CONSISTENCY CHECKS — fix any that fail:
+    - [ ] Channels match budget: if budget is Low/Lean, zero paid ads appear anywhere
+    - [ ] Channel count matches team size: team of 1-2 has max 3 active channels
+    - [ ] KPIs reference the actual recommended channels (not channels not in the plan)
+    - [ ] Funnel numbers are mathematically consistent stage to stage
+          Verify: stage[n] count = stage[n-1] count × stage[n-1] conversion %.
+          If Conversion produces 8 paying customers, Retention must show 8 — not 3.
+          Rewrite any funnel stage that fails this check.
+    - [ ] Funnel ends on a Retention stage — NEVER on Conversion                     # ← CHANGED
+          If the last stage is Conversion and it has a non-N/A conversion_rate,
+          add a Retention stage using: Conversion count × Conversion conversion_rate.
+          Set Retention's conversion_rate to "N/A".
+    - [ ] Each persona in messaging matches a persona defined in ICP section
+    - [ ] Every persona headline matches its assigned tone archetype:                 # ← CHANGED
+          Support Lead → urgent/relief | Analyst/PM → strategic/data |
+          CEO/Founder → ROI/growth | CFO → cost-control/forecast |
+          CIO/Head of IT → efficiency/integration
+          If a headline is generic (could apply to any SaaS product), rewrite it
+          using a specific pain point, number, or named trigger from that persona.
+    - [ ] Experiments are sequenced correctly (awareness to engagement to conversion)
+    - [ ] Referral program (if present) starts no earlier than Week 6
+    - [ ] Action plan week count equals exactly {timeline_weeks} weeks
+    - [ ] No value proposition or bullet uses forbidden words:
+          "powerful, seamless, robust, cutting-edge, innovative, world-class,
+           game-changing" — search every VP and bullet and rewrite any that contain
+           these words before finalizing.
+    - [ ] Every risk has an early warning signal and a named owner role
+    - [ ] No KPI is missing a baseline, target, or measurement tool
+    - [ ] No competitor has a null pricing_tiers or null exploitable_gap
+          If any are null, rewrite those competitors with real values.
+    - [ ] exploitable_gap is NOT identical to differentiation_notes for any competitor
+          If they match word-for-word, rewrite exploitable_gap as a specific GTM
+          attack angle (e.g., "Target Freshdesk $49 users with a one-click migration
+          offer that delivers their first AI insight report in under 5 minutes").
+    - [ ] No channel has a non-numeric monthly_reach or a bare number without units
+          If any monthly_reach is a phrase or unitless number, replace with a
+          specific value from the gtm_channels.md pattern file with context
+          (e.g., "~3,000 members in Support Driven Slack").
+    - [ ] No two channels share the same monthly_reach value
+          If duplicates exist, look up the correct figure per channel from
+          the gtm_channels.md pattern file and assign unique values.
+    - [ ] No key_trend cites a year earlier than 2025
+          If any trend references 2024 or earlier, rewrite it using a
+          2025 or 2026 event searched from current web data.
+
+    REWRITE RULE: If any section fails a check, rewrite that section inline
+    before producing the final blueprint. Do NOT pass through weak content.
+
+    NEXT STEPS CHECKLIST (final section):
+    - List exactly 7 actions the founder must complete in the NEXT 7 DAYS
+    - These must NOT simply repeat the Week 1 action plan — they must be
+      the single most critical first move for each strategic area:
+      (1) outreach, (2) content, (3) partnerships, (4) tracking setup,
+      (5) ICP validation, (6) positioning test, (7) one quick win experiment
+    - Each action must include: what to do, how long it should take, and
+      the tool or channel to use
+    - Format: "Day X: [Action] using [Tool] — expected time: [Xh]"
+
+  agent: gtm_orchestrator
+  expected_output: >
+    A complete, consistency-checked GTMBlueprint Pydantic object with all 7
+    sections fully populated, internally consistent, and free of vague language.
+    The next_steps list contains exactly 7 day-labeled, tool-specific,
+    time-estimated actions — not a repeat of the Week 1 action plan.
+    Every section passes all consistency checks listed above.
+    No forbidden words appear anywhere. No null fields for pricing_tiers,
+    exploitable_gap, or monthly_reach. No two channels share the same
+    monthly_reach value. No key_trend cites a year before 2025.
+    exploitable_gap is never identical to differentiation_notes.
+    Funnel ends on Retention with conversion_rate set to N/A.
+    Every persona headline matches its assigned tone archetype and is
+    specific enough that it could not apply to any other SaaS product.
