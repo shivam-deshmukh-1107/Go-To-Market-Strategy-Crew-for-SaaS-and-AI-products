@@ -1,159 +1,65 @@
-# Go-To-Market Strategy Crew for SaaS & AI Products
+# Go-To-Market Strategy Crew for SaaS & AI Products Using CrewAI
 
-An agentic AI application that generates a complete **Go-To-Market (GTM) blueprint** for SaaS and AI products using **CrewAI**, **Streamlit**, and **Pydantic**. It helps founders, solo builders, and early-stage teams convert a product idea plus business constraints into a structured GTM strategy with market research, ICP, personas, positioning, channels, experiments, KPIs, risks, and a week-by-week action plan.
+An multi-agentic AI application that generates a complete Go-To-Market (GTM) blueprint for SaaS and AI products using CrewAI, Streamlit, and Pydantic. It acts like a virtual strategy team for founders, solo builders, and early-stage teams who often lack dedicated GTM expertise, spend too much time on manual research, and end up with unstructured or unrealistic plans. By taking a short product description plus key business constraints (budget, timeline, team size, stage), it produces a structured GTM strategy covering market research, ICP and personas, positioning, channels, experiments, KPIs, risks, and a week‑by‑week action plan that can be reviewed in the browser and exported as PDF or JSON.
 
----
-
-## Overview
-
-Launching a SaaS or AI product requires much more than building a working product. Teams must identify the right customer, understand market dynamics, differentiate against competitors, choose practical acquisition channels, and execute within real constraints such as budget, timeline, and team size.[file:51]
-
-This project solves that problem by building a multi-agent GTM planning system that acts like a virtual strategy team. The app accepts a short product description and business inputs, runs a CrewAI workflow, and generates a structured GTM blueprint that can be viewed in the browser and exported as PDF or JSON.[file:51][file:52][file:58]
-
----
-
-## Problem Statement
-
-Many founders and small teams struggle with GTM planning because they:[file:51]
-
-- Do not have dedicated GTM or marketing experts.
-- Spend too much time manually researching competitors and defining ICPs.
-- Create plans that are incomplete, unstructured, or misaligned with budget and execution capacity.
-
-This project addresses that gap by creating a practical, reusable GTM generation workflow for SaaS and AI products.[file:51]
-
----
-
-## Project Goal
-
-The goal of this project is to build a **multi-agent GTM Strategy Crew** that:[file:51]
-
-- Accepts a short product description and business constraints as input.
-- Produces a structured, realistic GTM blueprint.
-- Supports SaaS and AI product use cases.
-- Demonstrates how agentic AI can be applied to real business workflows.
+<img width="1842" height="926" alt="Project_UI" src="https://github.com/user-attachments/assets/f55f1d48-ca8e-44fc-9e80-85720f806ddb" />
 
 ---
 
 ## What the App Generates
-
-The system generates a GTM blueprint with the following sections:[file:51][file:52][file:58][file:59]
+The system produces a complete GTM blueprint that includes:
 
 - Product and problem summary
-- Market context and key trends
-- Competitive landscape
-- Differentiation hints
-- Ideal Customer Profile (ICP)
-- 1 to 3 buyer personas
-- Positioning statement
-- Core value propositions
-- Persona-specific messaging
-- Primary channels
-- Prioritized GTM experiments
-- KPIs and funnel metrics
-- GTM risks and mitigations
-- Week-by-week action plan
-- 7-day founder checklist
-
----
+- Market context, key trends, and competitive landscape
+- Differentiation opportunities and positioning statement
+- Ideal Customer Profile (ICP) and 1–3 detailed buyer personas
+- Core value propositions and persona-specific messaging
+- Recommended primary channels with rationale
+- Prioritized GTM experiments with goals and timing
+- KPIs, funnel metrics, and GTM risk analysis with mitigations
+- Week-by-week GTM action plan
+- 7-day, high‑impact founder execution checklist
 
 ## Features
 
-- Multi-agent GTM workflow powered by CrewAI.[file:51][file:53]
-- Streamlit-based user interface for structured GTM input collection.[file:52]
-- Pydantic-based structured input and output models.[file:52][file:53][file:54]
-- Strategy generation tailored to budget, timeline, stage, and team size.[file:51][file:52]
-- Interactive blueprint display across multiple UI tabs.[file:59]
-- Export to **PDF** for shareable reports.[file:52][file:58]
-- Export to **JSON** for structured storage or downstream integrations.[file:52]
-- Clear separation of orchestration, models, and UI rendering.[file:53][file:58][file:59]
+- Multi-agent GTM workflow powered by CrewAI.
+- Streamlit-based user interface for structured GTM input collection.
+- Pydantic-based structured input and output models.
+- Strategy generation tailored to budget, timeline, stage, and team size.
+- Interactive blueprint display across multiple UI tabs.
+- Export to **PDF** for shareable reports.
+- Export to **JSON** for structured storage or downstream integrations.
+- Clear separation of orchestration, models, and UI rendering.
+
+## Generated GTM Stategy View:
+<img width="1853" height="903" alt="Project_UI_Results" src="https://github.com/user-attachments/assets/09d26f0c-3c12-4114-a5f6-a79fab84477d" />
 
 ---
 
-## Multi-Agent Architecture
-
-This project uses a six-agent CrewAI workflow running in a **sequential process**. Each agent is responsible for one GTM layer, and the final orchestrator consolidates all sections into one coherent blueprint.[file:51][file:53]
+## Multi-Agent Architecture & Inputs
+The app uses a **six‑agent, sequential CrewAI workflow**, where each agent owns one GTM layer and a final orchestrator merges everything into a single, coherent blueprint.
 
 ### Agents
 
-1. **Market Research Analyst**  
-   Understands the market, competitors, buyer pain points, and broader category context.[file:51][file:53]
+- **Market Research Analyst** – Analyzes market context, competitors, and buyer pain points.  
+- **ICP Persona Designer** – Defines the Ideal Customer Profile and creates detailed buyer personas.  
+- **Positioning & Messaging Strategist** – Crafts the positioning statement, core value propositions, and persona‑specific messaging.  
+- **Channel Experiment Planner** – Selects acquisition channels and designs GTM experiments aligned with stage, budget, and team size.  
+- **Metrics & Risk Analyst** – Defines KPIs, funnel stages, and key GTM risks with mitigations.  
+- **GTM Orchestrator (CMO/PM)** – Integrates all agent outputs into a constraint‑aware GTM blueprint.
 
-2. **ICP Persona Designer**  
-   Defines the Ideal Customer Profile and creates detailed buyer personas.[file:51][file:53]
+### Input Fields (from the Streamlit app)
 
-3. **Positioning & Messaging Strategist**  
-   Crafts the positioning statement, value propositions, and persona-specific messaging.[file:51][file:53]
+- **Product Description** – What the product does and the problem it solves.  
+- **Target Audience** – Who the product is for (e.g., B2B SaaS product and support teams).  
+- **Product Stage** – `idea`, `MVP`, `early-revenue`, or `growth`.  
+- **Pricing Model** – `subscription`, `usage-based`, `freemium`, or `one-time`.  
+- **Budget Level** – `low`, `medium`, or `high`.  
+- **Timeline (weeks)** – Configurable range, typically 4–52 weeks.  
+- **Team Size** – Brief description of the GTM team (e.g., “solo founder, 2‑person team”).  
 
-4. **Channel Experiment Planner**  
-   Selects acquisition channels and designs experiments that fit the product stage, budget, and team size.[file:51][file:53]
+These inputs are passed into the multi‑agent workflow so each agent tailors its recommendations to the product’s real constraints and context.
 
-5. **Metrics & Risk Analyst**  
-   Defines success metrics, funnel stages, and key GTM risks with mitigations.[file:51][file:53]
-
-6. **GTM Orchestrator (CMO/PM)**  
-   Integrates all outputs into a consistent, constraint-aware GTM blueprint.[file:51][file:53]
-
----
-
-## Workflow
-
-The system works in the following sequence:[file:51][file:52][file:53][file:54]
-
-1. The user enters product and business details in the Streamlit sidebar.
-2. The app validates and structures the input using Pydantic models.
-3. The CrewAI workflow runs multiple GTM tasks in sequence.
-4. The final response is parsed into a structured `GTMBlueprint`.
-5. The blueprint is rendered in the app and made available for PDF and JSON export.
-
----
-
-## Input Fields
-
-The Streamlit app currently collects the following inputs from the user:[file:52]
-
-- **Product Description**
-- **Target Audience**
-- **Product Stage** — `idea`, `MVP`, `early-revenue`, `growth`
-- **Pricing Model** — `subscription`, `usage-based`, `freemium`, `one-time`
-- **Budget Level** — `low`, `medium`, `high`
-- **Timeline (weeks)** — configurable from 4 to 52 weeks
-- **Team Size**
-
-These inputs are passed into the CrewAI workflow and used to tailor the generated strategy.[file:52][file:54]
-
----
-
-## Output Sections
-
-The generated GTM blueprint is displayed in the Streamlit UI with separate tabs for:[file:59]
-
-- Market
-- ICP & Personas
-- Positioning
-- Channels
-- Metrics & Risks
-- Action Plan
-- Next Steps
-
-The app also allows users to export the output in two formats:[file:52][file:58]
-
-- **PDF Export** — formatted report for sharing and presentation
-- **JSON Export** — structured machine-readable output
-
----
-
-## Tech Stack
-
-This project uses the following technologies:[file:51][file:52][file:53][file:58]
-
-- **Python**
-- **CrewAI**
-- **Streamlit**
-- **Pydantic**
-- **FPDF**
-- **PyYAML**
-- **python-dotenv**
 
 ---
 
@@ -169,22 +75,3 @@ To see what the GTM Strategy Crew produces end‑to‑end, you can download a fu
 
 
 ---
-
-## Project Structure
-
-```bash
-.
-├── app.py
-├── src/
-│   └── gtmcrew/
-│       ├── crew.py
-│       ├── main.py
-│       ├── models/
-│       │   ├── input_models.py
-│       │   └── gtm_plan_models.py
-│       └── ui/
-│           ├── components.py
-│           └── pdf_export.py
-├── config/
-│   └── tasks.yaml
-└── README.md
